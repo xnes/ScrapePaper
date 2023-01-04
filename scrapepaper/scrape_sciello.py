@@ -81,6 +81,11 @@ class ScrapeSciello:
                 fonte = item.find(class_='line source')
                 info = [x for x in fonte.text.replace('\n','  ').split('  ') if x != '']
                 publicacoes.append(info[0])
+                ano = 0000
+                for inf in info:
+                    if re.match(r'[0-9]{4},', inf):
+                        ano = inf[:-1]
+                pub_AA.append(ano)
             
 
         result = result.assign(pid=pids, 
@@ -90,10 +95,11 @@ class ScrapeSciello:
                             url=urls,
                             baixado=downloads,
                             citado=citacoes,
-                            fonte=publicacoes,)
+                            fonte=publicacoes,
+                            ano=pub_AA)
 
         print(end='\r') 
         return result
 
-#ss = ScrapeSciello()
-#print(ss.research('sport'))
+ss = ScrapeSciello()
+print(ss.research('sport'))
